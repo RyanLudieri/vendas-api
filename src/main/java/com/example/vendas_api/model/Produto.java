@@ -3,6 +3,7 @@ package com.example.vendas_api.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "produto")
@@ -20,10 +21,21 @@ public class Produto {
     @Column(name = "sku")
     private String sku;
 
+    @Column(name = "data_cadastro")
+    private LocalDate dataCadastro;
+
     public Produto() {
     }
 
     public Produto(String nome, String descricao, BigDecimal preco, String sku) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.sku = sku;
+    }
+
+    public Produto(Long id, String nome, String descricao, BigDecimal preco, String sku) {
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
@@ -39,6 +51,11 @@ public class Produto {
                 ", preco=" + preco +
                 ", sku='" + sku + '\'' +
                 '}';
+    }
+
+    @PrePersist
+    public void prePersist(){
+        setDataCadastro(LocalDate.now());
     }
 
     public Long getId() {
@@ -79,5 +96,13 @@ public class Produto {
 
     public void setSku(String sku) {
         this.sku = sku;
+    }
+
+    public LocalDate getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(LocalDate dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 }
